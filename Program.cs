@@ -29,7 +29,7 @@ class Program
                     q.AddJob<SessionUpdateJob>(sessionUpdateJob)
                         .AddTrigger(trigger =>
                         {
-                            //trigger.ForJob(sessionUpdateJob).WithSimpleSchedule(s => s.WithIntervalInMinutes(2).RepeatForever()); 
+                            //trigger.ForJob(sessionUpdateJob).WithSimpleSchedule(s => s.WithIntervalInMinutes(2)); 
                             trigger.ForJob(sessionUpdateJob).WithCronSchedule("0 0 9-16 ? * MON-FRI"); 
                         });
 
@@ -43,6 +43,7 @@ class Program
                         .AddTrigger(trigger =>
                         {
                             trigger.ForJob(bankNiftyFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            //trigger.ForJob(bankNiftyFirstSession).WithSimpleSchedule(x=>x.WithIntervalInMinutes(2));
                         });
 
                     var bankNiftyMidSession = JobKey.Create("bankNiftyMidSession");
@@ -70,7 +71,7 @@ class Program
                         });
 
                     #endregion
-
+                    /*
                     #region "NIFTY UPDATE JOB"
 
                     var niftyFirstSession = JobKey.Create("niftyFirstSession");
@@ -142,6 +143,7 @@ class Program
                         });
 
                     #endregion
+                    */
                 });
 
                 // Add Quartz hosted service with WaitForJobsToComplete

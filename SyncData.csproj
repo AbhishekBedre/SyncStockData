@@ -28,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OptionChain\OptionChain.csproj" />
+    <Reference Include="OptionChain">
+      <HintPath>reff\OptionChain.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
