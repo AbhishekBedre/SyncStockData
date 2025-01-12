@@ -71,7 +71,7 @@ class Program
                         });
 
                     #endregion
-                    /*
+                    
                     #region "NIFTY UPDATE JOB"
 
                     var niftyFirstSession = JobKey.Create("niftyFirstSession");
@@ -143,7 +143,7 @@ class Program
                         });
 
                     #endregion
-                    */
+                    
                 });
 
                 // Add Quartz hosted service with WaitForJobsToComplete
