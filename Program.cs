@@ -143,7 +143,36 @@ class Program
                         });
 
                     #endregion
-                    
+
+                    #region "INDEX UPDATE JOB"
+
+                    var indexFirstSession = JobKey.Create("indexFirstSession");
+
+                    q.AddJob<BroderMarketsUpdateJob>(indexFirstSession)
+                        .AddTrigger(trigger =>
+                        {
+                            trigger.ForJob(indexFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            //trigger.ForJob(indexFirstSession).WithSimpleSchedule(s => s.WithIntervalInMinutes(5)); 
+                        });
+
+                    var indexMidSession = JobKey.Create("indexMidSession");
+
+                    q.AddJob<BroderMarketsUpdateJob>(indexMidSession)
+                        .AddTrigger(trigger =>
+                        {
+                            trigger.ForJob(indexMidSession).WithCronSchedule("0 0-59/5 10-14 ? * MON-FRI"); // From 10:00 AM to 2:59 PM, Monday to Friday
+                        });
+
+                    var indexlastSession = JobKey.Create("indexlastSession");
+
+                    q.AddJob<BroderMarketsUpdateJob>(indexlastSession)
+                        .AddTrigger(trigger =>
+                        {
+                            trigger.ForJob(indexlastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
+                        });
+
+                    #endregion
+
                 });
 
                 // Add Quartz hosted service with WaitForJobsToComplete

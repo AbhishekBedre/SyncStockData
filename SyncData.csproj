@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Reference Include="OptionChain">
-      <HintPath>reff\OptionChain.dll</HintPath>
+      <HintPath>..\OptionChain\bin\Debug\net6.0\OptionChain.dll</HintPath>
     </Reference>
   </ItemGroup>
 
