@@ -188,6 +188,7 @@ class Program
                 {
                     options.WaitForJobsToComplete = true;
                 });
+
             }).Build();
 
         await host.RunAsync();
