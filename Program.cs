@@ -171,6 +171,14 @@ class Program
                             trigger.ForJob(indexlastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
                         });
 
+                    var indexFinalCall = JobKey.Create("indexFinalCall ");
+
+                    q.AddJob<BroderMarketsUpdateJob>(indexFinalCall)
+                        .AddTrigger(trigger =>
+                        {
+                            trigger.ForJob(indexFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                        });
+
                     #endregion
 
                 });
