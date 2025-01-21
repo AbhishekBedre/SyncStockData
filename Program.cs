@@ -140,6 +140,7 @@ class Program
                         .AddTrigger(trigger =>
                         {
                             trigger.ForJob(stockFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                            //trigger.ForJob(stockFinalCall).WithSimpleSchedule(x=>x.WithIntervalInMinutes(10)); // At 4:00 PM, Monday to Friday
                         });
 
                     #endregion

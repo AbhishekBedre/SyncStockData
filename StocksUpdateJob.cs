@@ -208,7 +208,7 @@ namespace SyncData
                     stockRoot.Advance.EntryDate = DateTime.Now.Date;
                     stockRoot.Advance.Time = context.FireTimeUtc.ToLocalTime().TimeOfDay;
 
-                    await _optionDbContext.Advance.AddRangeAsync(stockRoot.Advance);
+                    await _optionDbContext.Advance.AddRangeAsync(stockRoot.Advance);                    
 
                     await _optionDbContext.SaveChangesAsync();
 
@@ -267,6 +267,9 @@ namespace SyncData
                             await _optionDbContext.SaveChangesAsync();
                         }
                     }
+
+                    // Update the RFactor for all stocks
+                    await _optionDbContext.Database.ExecuteSqlRawAsync("EXEC [UpdateRelativeFactor]");
                 }
             }
             catch (Exception ex)
