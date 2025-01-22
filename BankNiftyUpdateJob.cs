@@ -70,23 +70,12 @@ namespace SyncData
 
             bool status = true;
             BankRoot? optionData = null;
-            string sessionCookie = "";
-
+            
             _logger.LogInformation($"Exection time: {counter}");
 
             using (HttpClient client = new HttpClient())
             {
-                var sessionInfo = await _optionDbContext.Sessions.Where(x => x.Id > 0).FirstOrDefaultAsync();
-
-                if (sessionInfo != null)
-                {
-                    sessionCookie = sessionInfo.Cookie ?? "";
-                }
-
-                client.DefaultRequestHeaders.Add("User-Agent", "PostmanRuntime/7.43.0");
-                client.DefaultRequestHeaders.Add("Accept", "*/*");
-                client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-                client.DefaultRequestHeaders.Add("cookie", sessionCookie);
+                await Common.UpdateCookieAndHeaders(client, _optionDbContext, JobType.BankNiftyUpdate);
 
                 string url = "https://www.nseindia.com/api/option-chain-indices?symbol=BANKNIFTY";
 

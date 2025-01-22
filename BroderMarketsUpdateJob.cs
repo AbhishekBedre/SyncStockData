@@ -82,23 +82,8 @@ namespace SyncData
 
             using (HttpClient client = new HttpClient())
             {
-                var sessionInfo = await _optionDbContext.Sessions.Where(x => x.Id > 0).FirstOrDefaultAsync();
+                await Common.UpdateCookieAndHeaders(client, _optionDbContext, JobType.BroderMarketUpdate);
 
-                if (sessionInfo != null)
-                {
-                    sessionCookie = sessionInfo.Cookie ?? "";
-                }
-
-                client.DefaultRequestHeaders.Add("User-Agent", "PostmanRuntime/7.43.0");
-                client.DefaultRequestHeaders.Add("Accept", "*/*");
-                client.DefaultRequestHeaders.Add("Connection", "keep-alive");
-
-                string pattern = @"(nsit=[^;]*;|nseappid=[^;]*;)";
-
-                // Replace matched substrings with an empty string
-                string newCookie = Regex.Replace(sessionCookie, pattern, string.Empty);
-
-                client.DefaultRequestHeaders.Add("cookie", newCookie);
                 string url = "https://www.nseindia.com/api/allIndices";
 
                 try

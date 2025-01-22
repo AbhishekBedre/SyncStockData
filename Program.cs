@@ -79,6 +79,7 @@ class Program
                     q.AddJob<NiftyUpdateJob>(niftyFirstSession)
                         .AddTrigger(trigger =>
                         {
+                            //trigger.ForJob(niftyFirstSession).WithSimpleSchedule(x=>x.WithIntervalInMinutes(5));
                             trigger.ForJob(niftyFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
                         });
 
