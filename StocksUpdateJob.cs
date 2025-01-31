@@ -28,6 +28,8 @@ namespace SyncData
 
             await GetStockData(context);
 
+            Console.WriteLine($"{nameof(StocksUpdateJob)} completed successfully.");
+
             await Task.CompletedTask;
         }
 
@@ -77,7 +79,7 @@ namespace SyncData
             {
                 await Common.UpdateCookieAndHeaders(client, _optionDbContext, JobType.StockUpdate);
 
-                string url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%20200";
+                string url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%20500";
 
                 try
                 {

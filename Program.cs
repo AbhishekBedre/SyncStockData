@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OptionChain;
@@ -9,6 +10,12 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        const string SESSION_EXPRESSION = "0 0 9-16 ? * MON-SAT";
+        const string FIRST_SESSION_EXP = "0 15-59/5 9 ? * MON-SAT";
+        const string MID_SESSION_EXP = "0 0-59/5 10-14 ? * MON-SAT";
+        const string LAST_SESSION_EXP = "0 0-30/5 15 ? * MON-SAT";
+        const string FINAL_SESSION_EXP = "0 0 16 ? * MON-SAT";
+
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
@@ -30,7 +37,7 @@ class Program
                         .AddTrigger(trigger =>
                         {
                             //trigger.ForJob(sessionUpdateJob).WithSimpleSchedule(s => s.WithIntervalInMinutes(2)); 
-                            trigger.ForJob(sessionUpdateJob).WithCronSchedule("0 0 9-16 ? * MON-FRI"); 
+                            trigger.ForJob(sessionUpdateJob).WithCronSchedule(SESSION_EXPRESSION); 
                         });
 
                     #endregion
@@ -42,7 +49,7 @@ class Program
                     q.AddJob<BankNiftyUpdateJob>(bankNiftyFirstSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(bankNiftyFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            trigger.ForJob(bankNiftyFirstSession).WithCronSchedule(FIRST_SESSION_EXP);
                             //trigger.ForJob(bankNiftyFirstSession).WithSimpleSchedule(x=>x.WithIntervalInMinutes(2));
                         });
 
@@ -51,7 +58,7 @@ class Program
                     q.AddJob<BankNiftyUpdateJob>(bankNiftyMidSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(bankNiftyMidSession).WithCronSchedule("0 0-59/5 10-14 ? * MON-FRI"); // From 10:00 AM to 2:59 PM, Monday to Friday
+                            trigger.ForJob(bankNiftyMidSession).WithCronSchedule(MID_SESSION_EXP); // From 10:00 AM to 2:59 PM, Monday to Friday
                         });
 
                     var bankNiftylastSession = JobKey.Create("bankNiftylastSession");
@@ -59,7 +66,7 @@ class Program
                     q.AddJob<BankNiftyUpdateJob>(bankNiftylastSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(bankNiftylastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
+                            trigger.ForJob(bankNiftylastSession).WithCronSchedule(LAST_SESSION_EXP); // From 3:00 PM to 3:30 PM, Monday to Friday
                         });
 
                     var bankNiftyFinalCall = JobKey.Create("bankNiftyFinalCall");
@@ -67,7 +74,7 @@ class Program
                     q.AddJob<BankNiftyUpdateJob>(bankNiftyFinalCall)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(bankNiftyFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                            trigger.ForJob(bankNiftyFinalCall).WithCronSchedule(FINAL_SESSION_EXP); // At 4:00 PM, Monday to Friday
                         });
 
                     #endregion
@@ -80,7 +87,7 @@ class Program
                         .AddTrigger(trigger =>
                         {
                             //trigger.ForJob(niftyFirstSession).WithSimpleSchedule(x=>x.WithIntervalInMinutes(5));
-                            trigger.ForJob(niftyFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            trigger.ForJob(niftyFirstSession).WithCronSchedule(FIRST_SESSION_EXP);
                         });
 
                     var niftyMidSession = JobKey.Create("niftyMidSession");
@@ -88,7 +95,7 @@ class Program
                     q.AddJob<NiftyUpdateJob>(niftyMidSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(niftyMidSession).WithCronSchedule("0 0-59/5 10-14 ? * MON-FRI"); // From 10:00 AM to 2:59 PM, Monday to Friday
+                            trigger.ForJob(niftyMidSession).WithCronSchedule(MID_SESSION_EXP); // From 10:00 AM to 2:59 PM, Monday to Friday
                         });
 
                     var niftylastSession = JobKey.Create("niftylastSession");
@@ -96,7 +103,7 @@ class Program
                     q.AddJob<NiftyUpdateJob>(niftylastSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(niftylastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
+                            trigger.ForJob(niftylastSession).WithCronSchedule(LAST_SESSION_EXP); // From 3:00 PM to 3:30 PM, Monday to Friday
                         });
 
                     var niftyFinalCall = JobKey.Create("niftyFinalCall");
@@ -104,7 +111,7 @@ class Program
                     q.AddJob<NiftyUpdateJob>(niftyFinalCall)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(niftyFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                            trigger.ForJob(niftyFinalCall).WithCronSchedule(FINAL_SESSION_EXP); // At 4:00 PM, Monday to Friday
                         });
 
                     #endregion
@@ -116,7 +123,8 @@ class Program
                     q.AddJob<StocksUpdateJob>(stockFirstSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(stockFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            //trigger.ForJob(stockFirstSession).WithSimpleSchedule(s => s.WithIntervalInMinutes(2));
+                            trigger.ForJob(stockFirstSession).WithCronSchedule(FIRST_SESSION_EXP);
                         });
 
                     var stockMidSession = JobKey.Create("stockMidSession");
@@ -124,7 +132,7 @@ class Program
                     q.AddJob<StocksUpdateJob>(stockMidSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(stockMidSession).WithCronSchedule("0 0-59/5 10-14 ? * MON-FRI"); // From 10:00 AM to 2:59 PM, Monday to Friday
+                            trigger.ForJob(stockMidSession).WithCronSchedule(MID_SESSION_EXP); // From 10:00 AM to 2:59 PM, Monday to Friday
                         });
 
                     var stocklastSession = JobKey.Create("stocklastSession");
@@ -132,7 +140,7 @@ class Program
                     q.AddJob<StocksUpdateJob>(stocklastSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(stocklastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
+                            trigger.ForJob(stocklastSession).WithCronSchedule(LAST_SESSION_EXP); // From 3:00 PM to 3:30 PM, Monday to Friday
                         });
 
                     var stockFinalCall = JobKey.Create("stockFinalCall");
@@ -140,7 +148,7 @@ class Program
                     q.AddJob<StocksUpdateJob>(stockFinalCall)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(stockFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                            trigger.ForJob(stockFinalCall).WithCronSchedule(FINAL_SESSION_EXP); // At 4:00 PM, Monday to Friday
                             //trigger.ForJob(stockFinalCall).WithSimpleSchedule(x=>x.WithIntervalInMinutes(10)); // At 4:00 PM, Monday to Friday
                         });
 
@@ -153,7 +161,7 @@ class Program
                     q.AddJob<BroderMarketsUpdateJob>(indexFirstSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(indexFirstSession).WithCronSchedule("0 15-59/5 9 ? * MON-FRI");
+                            trigger.ForJob(indexFirstSession).WithCronSchedule(FIRST_SESSION_EXP);
                             //trigger.ForJob(indexFirstSession).WithSimpleSchedule(s => s.WithIntervalInMinutes(5)); 
                         });
 
@@ -162,7 +170,7 @@ class Program
                     q.AddJob<BroderMarketsUpdateJob>(indexMidSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(indexMidSession).WithCronSchedule("0 0-59/5 10-14 ? * MON-FRI"); // From 10:00 AM to 2:59 PM, Monday to Friday
+                            trigger.ForJob(indexMidSession).WithCronSchedule(MID_SESSION_EXP); // From 10:00 AM to 2:59 PM, Monday to Friday
                         });
 
                     var indexlastSession = JobKey.Create("indexlastSession");
@@ -170,7 +178,7 @@ class Program
                     q.AddJob<BroderMarketsUpdateJob>(indexlastSession)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(indexlastSession).WithCronSchedule("0 0-30/5 15 ? * MON-FRI"); // From 3:00 PM to 3:30 PM, Monday to Friday
+                            trigger.ForJob(indexlastSession).WithCronSchedule(LAST_SESSION_EXP); // From 3:00 PM to 3:30 PM, Monday to Friday
                         });
 
                     var indexFinalCall = JobKey.Create("indexFinalCall");
@@ -178,7 +186,7 @@ class Program
                     q.AddJob<BroderMarketsUpdateJob>(indexFinalCall)
                         .AddTrigger(trigger =>
                         {
-                            trigger.ForJob(indexFinalCall).WithCronSchedule("0 0 16 ? * MON-FRI"); // At 4:00 PM, Monday to Friday
+                            trigger.ForJob(indexFinalCall).WithCronSchedule(FINAL_SESSION_EXP); // At 4:00 PM, Monday to Friday
                         });
 
                     #endregion
