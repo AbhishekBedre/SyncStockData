@@ -10,11 +10,11 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        const string SESSION_EXPRESSION = "0 0 9-16 ? * MON-SAT";
-        const string FIRST_SESSION_EXP = "0 15-59/5 9 ? * MON-SAT";
-        const string MID_SESSION_EXP = "0 0-59/5 10-14 ? * MON-SAT";
-        const string LAST_SESSION_EXP = "0 0-30/5 15 ? * MON-SAT";
-        const string FINAL_SESSION_EXP = "0 0 16 ? * MON-SAT";
+        const string SESSION_EXPRESSION = "0 0 9-16 ? * MON-FRI";
+        const string FIRST_SESSION_EXP = "0 15-59/5 9 ? * MON-FRI";
+        const string MID_SESSION_EXP = "0 0-59/5 10-14 ? * MON-FRI";
+        const string LAST_SESSION_EXP = "0 0-30/5 15 ? * MON-FRI";
+        const string FINAL_SESSION_EXP = "0 0 16 ? * MON-FRI";
 
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
