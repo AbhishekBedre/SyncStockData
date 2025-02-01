@@ -29,6 +29,8 @@ namespace SyncData
 
             await GetBankNiftyOptions(context);
 
+            Console.WriteLine($"{nameof(BankNiftyUpdateJob)} completed successfully. Time: - " + context.FireTimeUtc.ToLocalTime());
+
             await Task.CompletedTask;
         }
 

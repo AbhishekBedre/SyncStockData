@@ -28,7 +28,7 @@ namespace SyncData
 
             await GetStockData(context);
 
-            Console.WriteLine($"{nameof(StocksUpdateJob)} completed successfully.");
+            Console.WriteLine($"{nameof(StocksUpdateJob)} completed successfully. Time: - " + context.FireTimeUtc.ToLocalTime());
 
             await Task.CompletedTask;
         }
@@ -81,6 +81,8 @@ namespace SyncData
 
                 string url = "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%20500";
 
+                Console.WriteLine("Requesting to : " + url);
+
                 try
                 {
                     HttpResponseMessage response = await client.GetAsync(url);
@@ -97,6 +99,7 @@ namespace SyncData
                             Utility.LogDetails($"{nameof(GetStockData)} -> Failed to parse JSON content.");
                             throw new Exception("Failed to parse JSON content.");
                         }
+                        Console.WriteLine("Successfully got the response");
                     }
                     else
                     {

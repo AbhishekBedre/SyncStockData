@@ -25,6 +25,8 @@ namespace SyncData
 
             await ExecuteSessionUpdate(context);
 
+            Console.WriteLine($"{nameof(SessionUpdateJob)} completed successfully. Time: - " + context.FireTimeUtc.ToLocalTime());
+
             await Task.CompletedTask;
         }
 

@@ -34,6 +34,8 @@ namespace SyncData
 
             await GetBroderMarketData(context);
 
+            Console.WriteLine($"{nameof(BroderMarketsUpdateJob)} completed successfully. Time: - " + context.FireTimeUtc.ToLocalTime());
+
             await Task.CompletedTask;
         }
 
