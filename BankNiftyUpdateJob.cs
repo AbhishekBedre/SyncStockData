@@ -75,7 +75,15 @@ namespace SyncData
             
             _logger.LogInformation($"Exection time: {counter}");
 
-            using (HttpClient client = new HttpClient())
+
+            HttpClientHandler httpClientHandler = new HttpClientHandler();
+
+            // Enable automatic decompression for gzip, deflate, and Brotli
+            httpClientHandler.AutomaticDecompression = System.Net.DecompressionMethods.GZip |
+                                             System.Net.DecompressionMethods.Deflate |
+                                             System.Net.DecompressionMethods.Brotli;
+
+            using (HttpClient client = new HttpClient(httpClientHandler))
             {
                 await Common.UpdateCookieAndHeaders(client, _optionDbContext, JobType.BankNiftyUpdate);
 
